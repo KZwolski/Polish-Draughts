@@ -1,19 +1,46 @@
 public class Pawn {
     private int color;
-    private int X;
-    private int Y;
+    private int x;
+    private int y;
     private boolean isCrowned;
+    private boolean isActive;
+    private int squareColor;
 
-    public Pawn(int color, int x, int y, boolean isCrowned) {
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public int getSquareColor() {
+        return squareColor;
+    }
+
+    public void setSquareColor(int squareColor) {
+        this.squareColor = squareColor;
+    }
+
+    public Pawn(int color, int x, int y, boolean isCrowned, boolean isActive, int squareColor) {
         this.color = color;
-        X = x;
-        Y = y;
+        this.x = x;
+        this.y = y;
         this.isCrowned = isCrowned;
+        this.isActive = isActive;
+        this.squareColor = squareColor;
+    }
+
+    public Pawn() {
     }
 
     @Override
     public String toString() {
         return "color=" + color;
+    }
+
+    public String toStringCords() {
+        return "X= " + x + "Y= " + y;
     }
 
     public int getColor() {
@@ -25,19 +52,19 @@ public class Pawn {
     }
 
     public int getX() {
-        return X;
+        return x;
     }
 
     public void setX(int x) {
-        X = x;
+        this.x = x;
     }
 
     public int getY() {
-        return Y;
+        return y;
     }
 
     public void setY(int y) {
-        Y = y;
+        this.y = y;
     }
 
     public boolean isCrowned() {
