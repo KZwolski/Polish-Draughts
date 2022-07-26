@@ -11,6 +11,11 @@ public class Pawn {
         this.isCrowned = isCrowned;
     }
 
+    @Override
+    public String toString() {
+        return "color=" + color;
+    }
+
     public int getColor() {
         return color;
     }
