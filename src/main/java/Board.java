@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 
 public class Board {
     public String[][] board;
@@ -45,6 +47,11 @@ public class Board {
             System.out.print(" " + (char) (64 + i) + " ");
         }
 
+    }
+
+    public int[][] fillBoard(int size) {
+        int[][] pawns = new int[size][size];
+        return pawns;
     }
 
 }

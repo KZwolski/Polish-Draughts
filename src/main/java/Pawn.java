@@ -42,4 +42,9 @@ public class Pawn {
     public void setCrowned(boolean crowned) {
         isCrowned = crowned;
     }
+
+    public boolean moveValidation (int X, int Y, String[][] board) {
+
+        return false;
+    }
 }
