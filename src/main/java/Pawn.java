@@ -1,21 +1,21 @@
 public class Pawn {
-    private String color;
+    private int color;
     private int X;
     private int Y;
     private boolean isCrowned;
 
-    public Pawn(String color, int x, int y, boolean isCrowned) {
+    public Pawn(int color, int x, int y, boolean isCrowned) {
         this.color = color;
         X = x;
         Y = y;
         this.isCrowned = isCrowned;
     }
 
-    public String getColor() {
+    public int getColor() {
         return color;
     }
 
-    public void setColor(String color) {
+    public void setColor(int color) {
         this.color = color;
     }
 

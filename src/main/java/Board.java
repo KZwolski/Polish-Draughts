@@ -2,26 +2,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
-    public String[][] board;
+    public Object[][] board;
 
     public Board(int size) {
-        board = new String[size][size];
-        for (int i = 0; i < size; i++) {
+        board = new Object[size][size];
+        for (int i = 0; i < 4; i++) {
             for (int j = 0; j < size; j++) {
-                if (i % 2 == 0) {
-                    if (j % 2 == 0) {
-                        board[i][j] = "[ ]";
-                    } else {
-                        board[i][j] = "[" + String.valueOf((char) (35))+ "]";
+                if(i%2==0){
+                    if(j%2!=0) {
+                        Pawn pawn = new Pawn(1,i,j,false);
+                        board[i][j] = pawn.getColor();
                     }
-                } else {
-                    if (j % 2 == 0) {
-
-                        board[i][j] = "[" + String.valueOf((char) (35))+ "]";
-                    } else {
-                        board[i][j] = "[ ]";
+                }else{
+                    if(j%2==0){
+                        Pawn pawn = new Pawn(1,i,j,false);
+                        board[i][j] = pawn.getColor();
                     }
+                }
+            }
+        }
+        for (int i = size-4; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if(i%2==0){
+                    if(j%2!=0) {
+                        Pawn pawn = new Pawn(2,i,j,false);
+                        board[i][j] = pawn.getColor();
 
+                    }
+                }else{
+                    if(j%2==0){
+                        Pawn pawn = new Pawn(2,i,j,false);
+                        board[i][j] = pawn.getColor();
+                    }
                 }
             }
         }
