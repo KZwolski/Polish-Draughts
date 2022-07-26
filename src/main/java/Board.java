@@ -72,9 +72,9 @@ public class Board {
             }
 
             for (int j = 0; j < this.board[i - 1].length; j++) {
-                if (board[i - 1][j].toString().equals("color=1")) {
+                if (board[i - 1][j].getColor() == 1) {
                     System.out.print("[o]");
-                } else if (board[i - 1][j].toString().equals("color=2")) {
+                } else if (board[i - 1][j].getColor() == 2) {
                     System.out.print("[x]");
                 } else if (board[i - 1][j].getSquareColor() == 8) {
                     System.out.print("[ ]");
@@ -99,15 +99,14 @@ public class Board {
     }
 
 
-    public void movementPhase(int x, int y) {
+    public void movementPhase(int[] askForInput) {
+        int x = askForInput[0];
+        int y = askForInput[1];
         Pawn pawn = board[x][y];
-        pawn.setX(x+1);
-        pawn.setY(y+1);
-        board[x][y] = board[x+1][y+1];
-        board[x+1][y+1] = pawn;
+        pawn.setX(x + 1);
+        pawn.setY(y + 1);
+        board[x][y] = board[x + 1][y + 1];
+        board[x + 1][y + 1] = pawn;
 
     }
-
-
-
 }
