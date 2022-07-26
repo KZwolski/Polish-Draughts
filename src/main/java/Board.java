@@ -3,29 +3,25 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Board {
+    private int whiteSquare = 4;
+    private int blackSquare = 8;
     public Pawn[][] board;
 
     public Board(int size) {
-         board = new Pawn[size][size];
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                board[i][j] = new Pawn();
-            }
-            }
-
+        board = new Pawn[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 if (i % 2 == 0) {
                     if (j % 2 != 0) {
-                        board[i][j].setSquareColor(4);
+                        board[i][j] = new Pawn(whiteSquare);
                     } else {
-                        board[i][j].setSquareColor(8);
+                        board[i][j] = new Pawn(blackSquare);
                     }
                 } else {
                     if (j % 2 == 0) {
-                        board[i][j].setSquareColor(4);
+                        board[i][j] = new Pawn(whiteSquare);
                     } else {
-                        board[i][j].setSquareColor(8);
+                        board[i][j] = new Pawn(blackSquare);
                     }
                 }
             }
@@ -111,5 +107,7 @@ public class Board {
         board[x+1][y+1] = pawn;
 
     }
+
+
 
 }

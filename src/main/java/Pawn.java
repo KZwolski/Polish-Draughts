@@ -31,7 +31,8 @@ public class Pawn {
         this.squareColor = squareColor;
     }
 
-    public Pawn() {
+    public Pawn(int squareColor) {
+        this.squareColor = squareColor;
     }
 
     @Override

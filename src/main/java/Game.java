@@ -8,9 +8,5 @@ public class Game {
         board.printBoard();
         board.movementPhase(3,0);
         board.printBoard();
-
-
     }
-
-
 }
