@@ -31,13 +31,13 @@ public class Board {
             for (int j = 0; j < size; j++) {
                 if (i % 2 == 0) {
                     if (j % 2 != 0) {
-                        Pawn pawn = new Pawn(1, i, j, false);
-                        board[i][j] = pawn;
+                        board[i][j] = new Pawn(1, i, j, false);
+
                     }
                 } else {
                     if (j % 2 == 0) {
-                        Pawn pawn = new Pawn(1, i, j, false);
-                        board[i][j] = pawn;
+                        board[i][j] = new Pawn(1, i, j, false);
+
                     }
                 }
             }
@@ -46,14 +46,14 @@ public class Board {
             for (int j = 0; j < size; j++) {
                 if (i % 2 == 0) {
                     if (j % 2 != 0) {
-                        Pawn pawn = new Pawn(2, i, j, false);
-                        board[i][j] = pawn;
+                        board[i][j] = new Pawn(2, i, j, false);
+
 
                     }
                 } else {
                     if (j % 2 == 0) {
-                        Pawn pawn = new Pawn(2, i, j, false);
-                        board[i][j] = pawn;
+                        board[i][j] = new Pawn(2, i, j, false);
+
                     }
                 }
             }
@@ -88,7 +88,7 @@ public class Board {
         for (int i = 1; i <= board.length; i++) {
             System.out.print(" " + (char) (64 + i) + " ");
         }
-
+        System.out.println(board[0][0].toString());
     }
 
     public int[][] fillBoard(int size) {
@@ -96,7 +96,7 @@ public class Board {
         return pawns;
     }
 
-    
+
     public void movementPhase(int x, int y) {
 
     }
