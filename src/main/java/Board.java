@@ -3,24 +3,25 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Board {
-    public Object[][] board;
+    private int whiteSquare = 4;
+    private int blackSquare = 8;
+    public Pawn[][] board;
 
     public Board(int size) {
-         board = new Object[size][size];
-
+        board = new Pawn[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 if (i % 2 == 0) {
                     if (j % 2 != 0) {
-                        board[i][j] = 4;
+                        board[i][j] = new Pawn(whiteSquare);
                     } else {
-                        board[i][j] = 8;
+                        board[i][j] = new Pawn(blackSquare);
                     }
                 } else {
                     if (j % 2 == 0) {
-                        board[i][j] = 4;
+                        board[i][j] = new Pawn(whiteSquare);
                     } else {
-                        board[i][j] = 8;
+                        board[i][j] = new Pawn(blackSquare);
                     }
                 }
             }
@@ -31,13 +32,13 @@ public class Board {
             for (int j = 0; j < size; j++) {
                 if (i % 2 == 0) {
                     if (j % 2 != 0) {
-                        board[i][j] = new Pawn(1, i, j, false);
-
+                        Pawn pawn = new Pawn(1, i, j, false, true, board[i][j].getSquareColor());
+                        board[i][j] = pawn;
                     }
                 } else {
                     if (j % 2 == 0) {
-                        board[i][j] = new Pawn(1, i, j, false);
-
+                        Pawn pawn = new Pawn(1, i, j, false, true, board[i][j].getSquareColor());
+                        board[i][j] = pawn;
                     }
                 }
             }
@@ -46,14 +47,14 @@ public class Board {
             for (int j = 0; j < size; j++) {
                 if (i % 2 == 0) {
                     if (j % 2 != 0) {
-                        board[i][j] = new Pawn(2, i, j, false);
-
+                        Pawn pawn = new Pawn(2, i, j, false, true, board[i][j].getSquareColor());
+                        board[i][j] = pawn;
 
                     }
                 } else {
                     if (j % 2 == 0) {
-                        board[i][j] = new Pawn(2, i, j, false);
-
+                        Pawn pawn = new Pawn(2, i, j, false, true, board[i][j].getSquareColor());
+                        board[i][j] = pawn;
                     }
                 }
             }
@@ -71,14 +72,14 @@ public class Board {
             }
 
             for (int j = 0; j < this.board[i - 1].length; j++) {
-                if (board[i - 1][j].equals(8)) {
-                    System.out.print("[ ]");
-                } else if (board[i - 1][j].equals(4)) {
-                    System.out.print("[#]");
-                } else if (board[i - 1][j].toString().equals("color=1")) {
+                if (board[i - 1][j].getColor() == 1) {
                     System.out.print("[o]");
-                } else if (board[i - 1][j].toString().equals("color=2")) {
+                } else if (board[i - 1][j].getColor() == 2) {
                     System.out.print("[x]");
+                } else if (board[i - 1][j].getSquareColor() == 8) {
+                    System.out.print("[ ]");
+                } else if (board[i - 1][j].getSquareColor() == 4) {
+                    System.out.print("[#]");
                 }
 
             }
@@ -88,7 +89,8 @@ public class Board {
         for (int i = 1; i <= board.length; i++) {
             System.out.print(" " + (char) (64 + i) + " ");
         }
-        System.out.println(board[0][0].toString());
+        System.out.println();
+
     }
 
     public int[][] fillBoard(int size) {
@@ -97,9 +99,14 @@ public class Board {
     }
 
 
-    public void movementPhase(int x, int y) {
+    public void movementPhase(int[] askForInput) {
+        int x = askForInput[0];
+        int y = askForInput[1];
+        Pawn pawn = board[x][y];
+        pawn.setX(x + 1);
+        pawn.setY(y + 1);
+        board[x][y] = board[x + 1][y + 1];
+        board[x + 1][y + 1] = pawn;
 
     }
-
 }
-
