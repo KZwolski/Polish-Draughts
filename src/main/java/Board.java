@@ -66,4 +66,3 @@ public class Board {
         return pawns;
     }
 
-}
