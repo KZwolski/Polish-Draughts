@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Board {
@@ -6,6 +7,26 @@ public class Board {
 
     public Board(int size) {
         board = new Object[size][size];
+
+        for (int i = 0; i < size; i++){
+            for (int j = 0; j < size; j++){
+                if(i%2==0){
+                    if(j%2!=0) {
+                        board[i][j] = 4;
+                    } else {
+                        board[i][j] = 8;
+                    }
+                }else{
+                    if(j%2==0){
+                        board[i][j] = 8;
+                    } else {
+                        board[i][j] = 4;
+                    }
+                }
+            }
+        }
+
+
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < size; j++) {
                 if(i%2==0){
@@ -64,6 +85,11 @@ public class Board {
     public int[][] fillBoard(int size) {
         int[][] pawns = new int[size][size];
         return pawns;
+    }
+
+
+    public void movementPhase(int x, int y){
+
     }
 
 }
