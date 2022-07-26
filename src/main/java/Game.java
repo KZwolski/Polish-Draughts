@@ -6,6 +6,8 @@ public class Game {
         int size = scanner.nextInt();
         Board board = new Board(size);
         board.printBoard();
+        board.movementPhase(3,0);
+        board.printBoard();
 
 
     }
