@@ -18,9 +18,9 @@ public class Board {
                     }
                 }else{
                     if(j%2==0){
-                        board[i][j] = 8;
-                    } else {
                         board[i][j] = 4;
+                    } else {
+                        board[i][j] = 8;
                     }
                 }
             }
@@ -71,7 +71,17 @@ public class Board {
             }
 
             for (int j = 0; j < this.board[i - 1].length; j++) {
-                System.out.print(this.board[i - 1][j]);
+                if(board[i - 1][j].equals(8)){
+                    System.out.print("[ ]");
+                }else if(board[i - 1][j].equals(4)){
+                    System.out.print("[#]");
+                }
+                else if(board[i - 1][j].equals(1)){
+                    System.out.print("[o]");
+                }
+                else if(board[i - 1][j].equals(2)){
+                    System.out.print("[x]");
+                }
             }
             System.out.println();
         }
