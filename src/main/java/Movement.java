@@ -141,7 +141,6 @@ public class Movement {
         int [] coordinates = playersMove(board, player);
         ArrayList<int[]> possibleMoves = possibleMoves(coordinates, board);
         displayPossibleMoves(possibleMoves);
-        int direction;
         int x = coordinates[0];
         int y = coordinates[1];
         Pawn pawn = board.board[x][y];
@@ -152,5 +151,38 @@ public class Movement {
         board.board[x][y] = board.board[getCoordinates[0]][getCoordinates[1]];
         board.board[getCoordinates[0]][getCoordinates[1]] = pawn;
 
+    }
+
+    public int[] checkForBattle(Board board, int player){
+        int[] cords = new int[2];
+        for (int i = 0; i < board.board.length; i++) {
+            for (int j = 0; j < board.board.length; j++) {
+                if (board.board[i][j].getColor() == player){
+                if (isFieldOnBoard(i+1, j + 1, board) && board.board[i+1][j+1].getColor() != player
+                        && board.board[i+1][j+1].getColor() != 0){
+                    cords[0] = i;
+                    cords[1] = j;
+                    return cords;
+                } else if (isFieldOnBoard(i-1, j - 1, board) && board.board[i-1][j-1].getColor() != player
+                        && board.board[i+1][j+1].getColor() != 0){
+                    cords[0] = i;
+                    cords[1] = j;
+                    return cords;
+                } else if (isFieldOnBoard(i-1, j + 1, board) && board.board[i-1][j+1].getColor() != player
+                        && board.board[i+1][j+1].getColor() != 0){
+                    cords[0] = i;
+                    cords[1] = j;
+                    return cords;
+                } else if (isFieldOnBoard(i + 1, j - 1, board) && board.board[i+1][j-1].getColor() != player
+                        && board.board[i+1][j+1].getColor() != 0) {
+                    cords[0] = i;
+                    cords[1] = j;
+                    return cords;
+                }
+                }
+
+            }
+            }
+        return null;
     }
 }

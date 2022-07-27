@@ -5,10 +5,14 @@ public class Game {
         Movement movement = new Movement();
         int boardSize = movement.askForBoardSize();
         Board board = new Board(boardSize);
-        board.printBoard();
-        movement.movementPhase(board, 2);
-        board.printBoard();
+        while(true) {
+            board.printBoard();
+            movement.movementPhase(board, 2);
+            board.printBoard();
+            int[] test = movement.checkForBattle(board, 2);
+            System.out.println(test[0] + " " + test[1]);
 
+        }
     }
 
 }
