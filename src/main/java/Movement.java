@@ -73,9 +73,6 @@ public class Movement {
         int[] rightMove = emptyFields(row, column, board, 1);
         validMoves.add(leftMove);
         validMoves.add(rightMove);
-//        System.out.println(leftMove[0] + " " + leftMove[1]);
-        System.out.println(leftMove);
-        System.out.println(rightMove[0] + " " + rightMove[1]);
         return validMoves;
     }
 
@@ -106,4 +103,19 @@ public class Movement {
 
     }
 
+    public void displayPossibleMoves(ArrayList<int[]> moves){
+
+        for (int i=0; i<moves.size(); i++) {
+            if (moves.get(i) != null){
+                convertCoordinates(moves.get(i));
+            }
+        }
+
+    }
+
+    public void convertCoordinates(int[] list){
+        System.out.print((char) (list[1] + 'A' ));
+        System.out.print(list[0]+1);
+        System.out.println();
+    }
 }

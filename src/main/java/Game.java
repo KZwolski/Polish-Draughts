@@ -1,4 +1,4 @@
-import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Game {
     public static void main(String[] args) {
@@ -7,7 +7,8 @@ public class Game {
         Board board = new Board(boardSize);
         board.printBoard();
         int [] coordinates = movement.playersMove(board,1);
-        System.out.println(movement.possibleMoves(coordinates,board));
+        ArrayList<int[]> possibleMoves = movement.possibleMoves(coordinates, board);
+        movement.displayPossibleMoves(possibleMoves);
 
 
     }
