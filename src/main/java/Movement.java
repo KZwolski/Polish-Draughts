@@ -85,4 +85,15 @@ public class Movement {
         return null;
     }
 
+    public void movementPhase(int[] askForInput, Board board) {
+        int x = askForInput[0];
+        int y = askForInput[1];
+        Pawn pawn = board.board[x][y];
+        pawn.setX(x + 1);
+        pawn.setY(y + 1);
+        board.board[x][y] = board.board[x + 1][y + 1];
+        board.board[x + 1][y + 1] = pawn;
+
+    }
+
 }

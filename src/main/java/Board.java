@@ -99,14 +99,5 @@ public class Board {
     }
 
 
-    public void movementPhase(int[] askForInput) {
-        int x = askForInput[0];
-        int y = askForInput[1];
-        Pawn pawn = board[x][y];
-        pawn.setX(x + 1);
-        pawn.setY(y + 1);
-        board[x][y] = board[x + 1][y + 1];
-        board[x + 1][y + 1] = pawn;
 
-    }
 }
