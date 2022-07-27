@@ -14,7 +14,7 @@ public class Movement {
         try {
             int column = convertInputIntoColumn(input);
             int row = convertInputIntoRow(input);
-            return ((column <= size && column >=0) && (row <= size && row >=0));
+            return ((column <= size && column >= 0) && (row <= size && row >= 0));
         } catch (Exception e) {
             return false;
         }
@@ -47,6 +47,7 @@ public class Movement {
         }
     }
 
+
     public int askForBoardSize() {
         while (true) {
             System.out.println("Please enter board size (must be an even number between 10-20): ");
@@ -71,8 +72,12 @@ public class Movement {
 
         int[] leftMove = emptyFields(row, column, board, -1);
         int[] rightMove = emptyFields(row, column, board, 1);
-        validMoves.add(leftMove);
-        validMoves.add(rightMove);
+        if (leftMove != null) {
+            validMoves.add(leftMove);
+        }
+        if (rightMove != null) {
+            validMoves.add(rightMove);
+        }
         return validMoves;
     }
 
@@ -81,10 +86,17 @@ public class Movement {
     }
 
     public int[] emptyFields(int row, int column, Board board, int diagonal) {
+        int color = board.board[row][column].getColor();
+        int direction;
+        if (color == 1) {
+            direction = 1;
+        } else {
+            direction = -1;
+        }
         int[] coords = new int[2];
-        if (isFieldOnBoard(row + 1, column + diagonal, board)) {
-            if (!board.board[row + 1][column + diagonal].isActive()) {
-                coords[0] = row + 1;
+        if (isFieldOnBoard(row + direction, column + diagonal, board)) {
+            if (!board.board[row + direction][column + diagonal].isActive()) {
+                coords[0] = row + direction;
                 coords[1] = column + diagonal;
                 return coords;
             }
@@ -92,30 +104,53 @@ public class Movement {
         return null;
     }
 
-    public void movementPhase(int[] askForInput, Board board) {
-        int x = askForInput[0];
-        int y = askForInput[1];
-        Pawn pawn = board.board[x][y];
-        pawn.setX(x + 1);
-        pawn.setY(y + 1);
-        board.board[x][y] = board.board[x + 1][y + 1];
-        board.board[x + 1][y + 1] = pawn;
 
-    }
-
-    public void displayPossibleMoves(ArrayList<int[]> moves){
-
-        for (int i=0; i<moves.size(); i++) {
-            if (moves.get(i) != null){
+    public void displayPossibleMoves(ArrayList<int[]> moves) {
+        for (int i = 0; i < moves.size(); i++) {
+            if (moves.get(i) != null) {
                 convertCoordinates(moves.get(i));
             }
         }
 
     }
 
-    public void convertCoordinates(int[] list){
-        System.out.print((char) (list[1] + 'A' ));
-        System.out.print(list[0]+1);
+    public void convertCoordinates(int[] list) {
+        System.out.print((char) (list[1] + 'A'));
+        System.out.print(list[0] + 1);
         System.out.println();
+    }
+
+    public int[] getCoordinates(ArrayList<int[]> moves) {
+        System.out.println("Wybierz ruch: ");
+        Scanner scanner = new Scanner(System.in);
+        int chooseMove = scanner.nextInt();
+        if (moves.size() == 1) {
+            return moves.get(0);
+        } else if (moves.size() == 2) {
+            switch (chooseMove) {
+                case 1:
+                    return moves.get(0);
+                case 2:
+                    return moves.get(1);
+            }
+        }
+        return null;
+    }
+
+    public void movementPhase(Board board, int player) {
+        int [] coordinates = playersMove(board, player);
+        ArrayList<int[]> possibleMoves = possibleMoves(coordinates, board);
+        displayPossibleMoves(possibleMoves);
+        int direction;
+        int x = coordinates[0];
+        int y = coordinates[1];
+        Pawn pawn = board.board[x][y];
+        int[] getCoordinates = getCoordinates(possibleMoves);
+
+        pawn.setX(getCoordinates[0]);
+        pawn.setY(getCoordinates[1]);
+        board.board[x][y] = board.board[getCoordinates[0]][getCoordinates[1]];
+        board.board[getCoordinates[0]][getCoordinates[1]] = pawn;
+
     }
 }
