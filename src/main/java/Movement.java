@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Locale;
 public class Movement {
@@ -53,5 +54,35 @@ public class Movement {
 
     }
 
+    public ArrayList<int[]> possibleMoves(int[] coordinates, Board board){
+        ArrayList<int[]> validMoves = new ArrayList<>();
+        int row = coordinates[0];
+        int column = coordinates[1];
+
+        int[] leftMove = emptyFields(row, column, board, -1);
+        int[] rightMove = emptyFields(row, column, board, 1);
+        validMoves.add(leftMove);
+        validMoves.add(rightMove);
+//        System.out.println(leftMove[0] + " " + leftMove[1]);
+        System.out.println(leftMove);
+        System.out.println(rightMove[0] + " " + rightMove[1]);
+        return validMoves;
+    }
+
+    public boolean isFieldOnBoard(int row, int column, Board board){
+        return row >= 0 && column >= 0 && row < board.board.length && column <= board.board[row].length;
+    }
+
+    public int[] emptyFields(int row, int column, Board board, int diagonal){
+        int[] coords = new int[2];
+        if(isFieldOnBoard(row+1, column+diagonal, board)) {
+            if(!board.board[row+1][column+diagonal].isActive()){
+                coords[0] = row+1;
+                coords[1] = column+diagonal;
+                return coords;
+            }
+        }
+        return null;
+    }
 
 }

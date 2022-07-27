@@ -73,13 +73,13 @@ public class Board {
 
             for (int j = 0; j < this.board[i - 1].length; j++) {
                 if (board[i - 1][j].getColor() == 1) {
-                    System.out.print("[o]");
+                    System.out.print("[y]");
                 } else if (board[i - 1][j].getColor() == 2) {
                     System.out.print("[x]");
                 } else if (board[i - 1][j].getSquareColor() == 8) {
                     System.out.print("[ ]");
                 } else if (board[i - 1][j].getSquareColor() == 4) {
-                    System.out.print("[#]");
+                    System.out.print("[.]");
                 }
 
             }

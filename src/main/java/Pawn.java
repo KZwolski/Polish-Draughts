@@ -34,6 +34,7 @@ public class Pawn {
     public Pawn(int squareColor) {
         this.squareColor = squareColor;
     }
+    
 
     @Override
     public String toString() {

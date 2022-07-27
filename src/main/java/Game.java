@@ -7,8 +7,7 @@ public class Game {
         Board board = new Board(boardSize);
         board.printBoard();
         int [] coordinates = movement.playersMove(board,1);
-        board.movementPhase(coordinates);
-        board.printBoard();
+        System.out.println(movement.possibleMoves(coordinates,board));
 
 
     }
