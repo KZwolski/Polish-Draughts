@@ -3,7 +3,7 @@ import java.util.Scanner;
 import java.util.Locale;
 
 public class Movement {
-    private int switchPlayer = 2;
+    private int switchPlayer = 1;
 
     public String askForInput() {
         Scanner cords = new Scanner(System.in);
@@ -69,18 +69,11 @@ public class Movement {
     }
 
     public ArrayList<int[]> possibleMoves(int[] coordinates, Board board) {
-        ArrayList<int[]> validMoves = new ArrayList<>();
+        ArrayList<int[]> validMoves;
         int row = coordinates[0];
         int column = coordinates[1];
+        validMoves = emptyFields(row, column, board);
 
-        int[] leftMove = emptyFields(row, column, board, -1);
-        int[] rightMove = emptyFields(row, column, board, 1);
-        if (leftMove != null) {
-            validMoves.add(leftMove);
-        }
-        if (rightMove != null) {
-            validMoves.add(rightMove);
-        }
         return validMoves;
     }
 
@@ -92,29 +85,43 @@ public class Movement {
         return switchPlayer;
     }
 
-    public int[] emptyFields(int row, int column, Board board, int diagonal) {
+    public ArrayList<int[]> emptyFields(int row, int column, Board board) {
         int color = board.board[row][column].getColor();
         int direction;
+        ArrayList<int[]> possibleMovesDuringHit = new ArrayList<>();
+        ArrayList<int[]> possibleMovesWithoutHit = new ArrayList<>();
+
         if (color == 1) {
             direction = 1;
         } else {
             direction = -1;
         }
-        int[] coords = new int[2];
-        if (isFieldOnBoard(row + direction * 2, column + diagonal * 2, board) &&
-                board.board[row + direction * 2][column + diagonal * 2].getColor() == 0 &&
-                board.board[row + direction][column + diagonal].isActive()) {
-            coords[0] = row + direction * 2;
-            coords[1] = column + diagonal * 2;
-            return coords;
 
-        } else if (isFieldOnBoard(row + direction, column + diagonal, board) && !board.board[row + direction][column + diagonal].isActive()) {
-            coords[0] = row + direction;
-            coords[1] = column + diagonal;
-            return coords;
+        for (int i = -1; i <= 1; i += 2) {
+            if (isFieldOnBoard(row + i * 2, column + i * 2, board) &&
+                    board.board[row + i * 2][column + i * 2].getColor() == 0 &&
+                    board.board[row + i][column + i].isActive() && board.board[row + i][column + i].getColor() != color) {
+                possibleMovesDuringHit.add(putRowAndColumnIntoTable(row + i * 2, column + i * 2, row + i, column + i));
+
+            } else if ((isFieldOnBoard(row + i * 2, column -i * 2, board) &&
+                    board.board[row + i * 2][column - i * 2].getColor() == 0 &&
+                    board.board[row + i][column - i].isActive() && board.board[row + i][column - i].getColor() != color)) {
+                possibleMovesDuringHit.add(putRowAndColumnIntoTable(row + i * 2, column - i * 2, row + i, column - i));
+            } else if (isFieldOnBoard(row + direction, column + i, board) && !board.board[row + direction][column + i].isActive()) {
+
+                possibleMovesWithoutHit.add(putRowAndColumnIntoTable(row + direction, column + i));
+
+            }
+
         }
 
-        return null;
+        if (possibleMovesDuringHit.size() != 0) {
+            return possibleMovesDuringHit;
+        } else if (possibleMovesWithoutHit.size() != 0) {
+            return possibleMovesWithoutHit;
+        } else {
+            return null;
+        }
     }
 
 
@@ -161,6 +168,16 @@ public class Movement {
         return coordinates;
     }
 
+    public int[] putRowAndColumnIntoTable(int moveRow, int moveColumn, int rowToDelete, int columnToDelete) {
+        int[] coordinates = new int[4];
+        coordinates[0] = moveRow;
+        coordinates[1] = moveColumn;
+        coordinates[2] = rowToDelete;
+        coordinates[3] = columnToDelete;
+        return coordinates;
+    }
+
+
     public int getOppositeColor(int player) {
         int color;
         switch (player) {
@@ -186,7 +203,7 @@ public class Movement {
         for (int i = 0; i < board.board.length - 1; i++) {
             for (int j = 0; j < board.board.length - 1; j++) {
                 if (board.board[i][j].getColor() == player) {
-                    if (checkNeighbour(board, oppositeColor, i, j) && isHitPossible(board, i, j)) {
+                    if (isHitPossible(board, i, j, oppositeColor)) {
                         validMoves.add(putRowAndColumnIntoTable(i, j));
                     }
                 }
@@ -196,19 +213,18 @@ public class Movement {
         return validMoves;
     }
 
-    private boolean isHitPossible(Board board, int i, int j) {
-        return ((isFieldOnBoard(i + 2, j + 2, board) && board.board[i + 2][j + 2].getColor() == 0) ||
-                (isFieldOnBoard(i - 2, j - 2, board) && board.board[i - 2][j - 2].getColor() == 0) ||
-                (isFieldOnBoard(i - 2, j + 2, board) && board.board[i - 2][j + 2].getColor() == 0) ||
-                (isFieldOnBoard(i + 2, j - 2, board) && board.board[i + 2][j - 2].getColor() == 0));
+    private boolean isHitPossible(Board board, int i, int j, int oppositeColor) {
+        return (((isFieldOnBoard(i + 2, j + 2, board) && board.board[i + 2][j + 2].getColor() == 0) && checkNeighbour(board, oppositeColor, i + 1, j + 1)) ||
+                ((isFieldOnBoard(i - 2, j - 2, board) && board.board[i - 2][j - 2].getColor() == 0) && checkNeighbour(board, oppositeColor, i - 1, j - 1)) ||
+                ((isFieldOnBoard(i - 2, j + 2, board) && board.board[i - 2][j + 2].getColor() == 0) && checkNeighbour(board, oppositeColor, i - 1, j + 1)) ||
+                ((isFieldOnBoard(i + 2, j - 2, board) && board.board[i + 2][j - 2].getColor() == 0) && checkNeighbour(board, oppositeColor, i + 1, j - 1)));
     }
 
     private boolean checkNeighbour(Board board, int oppositeColor, int i, int j) {
-        return ((isFieldOnBoard(i + 1, j + 1, board) && board.board[i + 1][j + 1].getColor() == oppositeColor) ||
-                (isFieldOnBoard(i - 1, j - 1, board) && board.board[i - 1][j - 1].getColor() == oppositeColor) ||
-                (isFieldOnBoard(i - 1, j + 1, board) && board.board[i - 1][j + 1].getColor() == oppositeColor) ||
-                (isFieldOnBoard(i + 1, j - 1, board) && board.board[i + 1][j - 1].getColor() == oppositeColor));
+        return (isFieldOnBoard(i, j, board) && board.board[i][j].getColor() == oppositeColor);
+
     }
+
 
     public void movementPhase(Board board) {
         ArrayList<int[]> inDangerFields = checkForBattle(board, switchPlayer);
@@ -221,17 +237,25 @@ public class Movement {
             boolean isValid = false;
             while (!isValid) {
                 int[] coordinates = playersMove(board, switchPlayer);
+                Pawn pawn = board.board[coordinates[0]][coordinates[1]];
                 for (int i = 0; i < inDangerFields.size(); i++) {
                     if (inDangerFields.get(i)[0] == coordinates[0] && inDangerFields.get(i)[1] == coordinates[1]) {
-                        System.out.println("dupa");
                         ArrayList<int[]> possibleMoves = possibleMoves(coordinates, board);
                         displayPossibleMoves(possibleMoves);
+                        int[] getCoordinates = getCoordinates(possibleMoves);
+                        pawn.setX(getCoordinates[0]);
+                        pawn.setY(getCoordinates[1]);
+                        board.board[coordinates[0]][coordinates[1]] = board.board[getCoordinates[0]][getCoordinates[1]];
+                        board.board[getCoordinates[0]][getCoordinates[1]] = pawn;
+                        board.board[getCoordinates[2]][getCoordinates[3]].setColor(0);
+//                        if (checkForBattle(board, switchPlayer).size() != 0) {
+//                            movementPhase(board);
+//                        }
                         isValid = true;
                     }
                 }
             }
         } else {
-            System.out.println("dupa2");
             int[] coordinates = playersMove(board, switchPlayer);
             ArrayList<int[]> possibleMoves = possibleMoves(coordinates, board);
             displayPossibleMoves(possibleMoves);

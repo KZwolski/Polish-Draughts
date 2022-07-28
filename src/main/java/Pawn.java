@@ -36,15 +36,6 @@ public class Pawn {
     }
     
 
-    @Override
-    public String toString() {
-        return "color=" + color;
-    }
-
-    public String toStringCords() {
-        return "X= " + x + "Y= " + y;
-    }
-
     public int getColor() {
         return color;
     }
