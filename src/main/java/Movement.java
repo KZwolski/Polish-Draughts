@@ -271,7 +271,16 @@ public class Movement {
         }
 
     }
-
+    public boolean hasWon(Board board){
+        for(int i=0; i<board.board.length; i++){
+            for(int j=0; j<board.board.length; j++){
+                if(board.board[i][j].getColor() == switchPlayer)
+                    return false;
+            }
+        }
+        System.out.println("Player "+switchPlayer+" has Lost");
+        return true;
+    }
     public void switchPlayerFunc() {
         if (switchPlayer == 1) {
             switchPlayer = 2;
