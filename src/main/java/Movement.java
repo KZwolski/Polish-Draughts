@@ -126,15 +126,17 @@ public class Movement {
     public int[] getCoordinates(ArrayList<int[]> moves) {
         System.out.println("Choose one of the above numbers: ");
         Scanner scanner = new Scanner(System.in);
-        int chooseMove = scanner.nextInt();
+        String chooseMove = scanner.next();
         if (moves.size() == 1) {
             return moves.get(0);
         } else if (moves.size() == 2) {
             switch (chooseMove) {
-                case 1:
+                case "1":
                     return moves.get(0);
-                case 2:
+                case "2":
                     return moves.get(1);
+                default:
+                    return moves.get(0);
             }
         }
         return null;

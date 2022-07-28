@@ -73,13 +73,13 @@ public class Board {
 
             for (int j = 0; j < this.board[i - 1].length; j++) {
                 if (board[i - 1][j].getColor() == 1) {
-                    System.out.print("[y]");
+                    System.out.print(" Y ");
                 } else if (board[i - 1][j].getColor() == 2) {
-                    System.out.print("[x]");
+                    System.out.print(" X ");
                 } else if (board[i - 1][j].getSquareColor() == 8) {
-                    System.out.print("[ ]");
+                    System.out.print("░░░");
                 } else if (board[i - 1][j].getSquareColor() == 4) {
-                    System.out.print("[.]");
+                    System.out.print("   ");
                 }
 
             }
@@ -87,7 +87,7 @@ public class Board {
         }
         System.out.print("   ");
         for (int i = 1; i <= board.length; i++) {
-            System.out.print(" " + (char) (64 + i) + " ");
+            System.out.print(" " + (char) (64 + i)+ " ");
         }
         System.out.println();
 
