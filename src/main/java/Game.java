@@ -7,6 +7,7 @@ public class Game {
         Board board = new Board(boardSize);
         while(true) {
             board.printBoard();
+            System.out.println("Player " + movement.getSwitchPlayer());
             movement.movementPhase(board);
             board.printBoard();
             movement.switchPlayerFunc();

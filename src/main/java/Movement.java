@@ -3,7 +3,8 @@ import java.util.Scanner;
 import java.util.Locale;
 
 public class Movement {
-    private int switchPlayer = 1;
+    private int switchPlayer = 2;
+
     public String askForInput() {
         Scanner cords = new Scanner(System.in);
         System.out.println("Please enter coordinates: ");
@@ -43,6 +44,7 @@ public class Movement {
                     coordinates[1] = column;
                     return coordinates;
                 }
+
             }
             System.out.println("Invalid coordinates");
         }
@@ -83,7 +85,11 @@ public class Movement {
     }
 
     public boolean isFieldOnBoard(int row, int column, Board board) {
-        return row >= 0 && column >= 0 && row < board.board.length && column <= board.board[row].length;
+        return row >= 0 && column >= 0 && row < board.board.length - 1 && column <= board.board[row].length - 1;
+    }
+
+    public int getSwitchPlayer() {
+        return switchPlayer;
     }
 
     public int[] emptyFields(int row, int column, Board board, int diagonal) {
@@ -95,13 +101,19 @@ public class Movement {
             direction = -1;
         }
         int[] coords = new int[2];
-        if (isFieldOnBoard(row + direction, column + diagonal, board)) {
-            if (!board.board[row + direction][column + diagonal].isActive()) {
-                coords[0] = row + direction;
-                coords[1] = column + diagonal;
-                return coords;
-            }
+        if (isFieldOnBoard(row + direction * 2, column + diagonal * 2, board) &&
+                board.board[row + direction * 2][column + diagonal * 2].getColor() == 0 &&
+                board.board[row + direction][column + diagonal].isActive()) {
+            coords[0] = row + direction * 2;
+            coords[1] = column + diagonal * 2;
+            return coords;
+
+        } else if (isFieldOnBoard(row + direction, column + diagonal, board) && !board.board[row + direction][column + diagonal].isActive()) {
+            coords[0] = row + direction;
+            coords[1] = column + diagonal;
+            return coords;
         }
+
         return null;
     }
 
@@ -110,7 +122,7 @@ public class Movement {
         System.out.println("Possible moves for chosen Pawn: ");
         for (int i = 0; i < moves.size(); i++) {
             if (moves.get(i) != null) {
-                System.out.print(i+1 + ".");
+                System.out.print(i + 1 + ".");
                 convertCoordinates(moves.get(i));
             }
         }
@@ -199,34 +211,39 @@ public class Movement {
     }
 
     public void movementPhase(Board board) {
-        ArrayList<int[]> inDangerFields = checkForBattle(board,switchPlayer);
-        int x,y;
-        if(inDangerFields.size() != 0){
+        ArrayList<int[]> inDangerFields = checkForBattle(board, switchPlayer);
+        int x, y;
+        if (inDangerFields.size() != 0) {
             System.out.println("You must move with these Fields first: ");
-            for(int i=0; i<inDangerFields.size(); i++){
+            for (int i = 0; i < inDangerFields.size(); i++) {
                 convertCoordinates(inDangerFields.get(i));
             }
             boolean isValid = false;
-            while(!isValid){
+            while (!isValid) {
                 int[] coordinates = playersMove(board, switchPlayer);
-                for(int i=0; i<inDangerFields.size(); i++){
-                    if(inDangerFields.get(i)[0] == coordinates[0] && inDangerFields.get(i)[1] == coordinates[1]){
-                         isValid=true;
+                for (int i = 0; i < inDangerFields.size(); i++) {
+                    if (inDangerFields.get(i)[0] == coordinates[0] && inDangerFields.get(i)[1] == coordinates[1]) {
+                        System.out.println("dupa");
+                        ArrayList<int[]> possibleMoves = possibleMoves(coordinates, board);
+                        displayPossibleMoves(possibleMoves);
+                        isValid = true;
                     }
                 }
             }
-        }else{
-        int[] coordinates = playersMove(board, switchPlayer);
-        ArrayList<int[]> possibleMoves = possibleMoves(coordinates, board);
-        displayPossibleMoves(possibleMoves);
-         x = coordinates[0];
-         y = coordinates[1];
-        Pawn pawn = board.board[x][y];
-        int[] getCoordinates = getCoordinates(possibleMoves);
-        pawn.setX(getCoordinates[0]);
-        pawn.setY(getCoordinates[1]);
-        board.board[x][y] = board.board[getCoordinates[0]][getCoordinates[1]];
-        board.board[getCoordinates[0]][getCoordinates[1]] = pawn;}
+        } else {
+            System.out.println("dupa2");
+            int[] coordinates = playersMove(board, switchPlayer);
+            ArrayList<int[]> possibleMoves = possibleMoves(coordinates, board);
+            displayPossibleMoves(possibleMoves);
+            x = coordinates[0];
+            y = coordinates[1];
+            Pawn pawn = board.board[x][y];
+            int[] getCoordinates = getCoordinates(possibleMoves);
+            pawn.setX(getCoordinates[0]);
+            pawn.setY(getCoordinates[1]);
+            board.board[x][y] = board.board[getCoordinates[0]][getCoordinates[1]];
+            board.board[getCoordinates[0]][getCoordinates[1]] = pawn;
+        }
 
     }
 
