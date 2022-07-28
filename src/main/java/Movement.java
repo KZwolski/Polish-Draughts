@@ -3,6 +3,7 @@ import java.util.Scanner;
 import java.util.Locale;
 
 public class Movement {
+    private int switchPlayer = 1;
     public String askForInput() {
         Scanner cords = new Scanner(System.in);
         System.out.println("Please enter coordinates: ");
@@ -171,14 +172,9 @@ public class Movement {
         for (int i = 0; i < board.board.length - 1; i++) {
             for (int j = 0; j < board.board.length - 1; j++) {
                 if (board.board[i][j].getColor() == player) {
-                    if ((isFieldOnBoard(i + 1, j + 1, board) && board.board[i + 1][j + 1].getColor() == oppositeColor) ||
-                            (isFieldOnBoard(i - 1, j - 1, board) && board.board[i - 1][j - 1].getColor() == oppositeColor) ||
-                            (isFieldOnBoard(i - 1, j + 1, board) && board.board[i - 1][j + 1].getColor() == oppositeColor) ||
-                            (isFieldOnBoard(i + 1, j - 1, board) && board.board[i + 1][j - 1].getColor() == oppositeColor)) {
-
+                    if (checkNeighbour(board, oppositeColor, i, j) && isHitPossible(board, i, j)) {
                         validMoves.add(putRowAndColumnIntoTable(i, j));
                     }
-
                 }
 
             }
@@ -186,8 +182,22 @@ public class Movement {
         return validMoves;
     }
 
-    public void movementPhase(Board board, int player) {
-        ArrayList<int[]> inDangerFields = checkForBattle(board,player);
+    private boolean isHitPossible(Board board, int i, int j) {
+        return ((isFieldOnBoard(i + 2, j + 2, board) && board.board[i + 2][j + 2].getColor() == 0) ||
+                (isFieldOnBoard(i - 2, j - 2, board) && board.board[i - 2][j - 2].getColor() == 0) ||
+                (isFieldOnBoard(i - 2, j + 2, board) && board.board[i - 2][j + 2].getColor() == 0) ||
+                (isFieldOnBoard(i + 2, j - 2, board) && board.board[i + 2][j - 2].getColor() == 0));
+    }
+
+    private boolean checkNeighbour(Board board, int oppositeColor, int i, int j) {
+        return ((isFieldOnBoard(i + 1, j + 1, board) && board.board[i + 1][j + 1].getColor() == oppositeColor) ||
+                (isFieldOnBoard(i - 1, j - 1, board) && board.board[i - 1][j - 1].getColor() == oppositeColor) ||
+                (isFieldOnBoard(i - 1, j + 1, board) && board.board[i - 1][j + 1].getColor() == oppositeColor) ||
+                (isFieldOnBoard(i + 1, j - 1, board) && board.board[i + 1][j - 1].getColor() == oppositeColor));
+    }
+
+    public void movementPhase(Board board) {
+        ArrayList<int[]> inDangerFields = checkForBattle(board,switchPlayer);
         int x,y;
         if(inDangerFields.size() != 0){
             System.out.println("You must move with these Fields first: ");
@@ -196,7 +206,7 @@ public class Movement {
             }
             boolean isValid = false;
             while(!isValid){
-                int[] coordinates = playersMove(board, player);
+                int[] coordinates = playersMove(board, switchPlayer);
                 for(int i=0; i<inDangerFields.size(); i++){
                     if(inDangerFields.get(i)[0] == coordinates[0] && inDangerFields.get(i)[1] == coordinates[1]){
                          isValid=true;
@@ -204,7 +214,7 @@ public class Movement {
                 }
             }
         }else{
-        int[] coordinates = playersMove(board, player);
+        int[] coordinates = playersMove(board, switchPlayer);
         ArrayList<int[]> possibleMoves = possibleMoves(coordinates, board);
         displayPossibleMoves(possibleMoves);
          x = coordinates[0];
@@ -217,4 +227,13 @@ public class Movement {
         board.board[getCoordinates[0]][getCoordinates[1]] = pawn;}
 
     }
+
+    public void switchPlayerFunc() {
+        if (switchPlayer == 1) {
+            switchPlayer = 2;
+        } else {
+            switchPlayer = 1;
+        }
+    }
+
 }
