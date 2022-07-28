@@ -228,49 +228,58 @@ public class Movement {
 
     public void movementPhase(Board board) {
         ArrayList<int[]> inDangerFields = checkForBattle(board, switchPlayer);
-        int x, y;
         if (inDangerFields.size() != 0) {
-            System.out.println("You must move with these Fields first: ");
-            for (int i = 0; i < inDangerFields.size(); i++) {
-                convertCoordinates(inDangerFields.get(i));
-            }
-            boolean isValid = false;
-            while (!isValid) {
-                int[] coordinates = playersMove(board, switchPlayer);
-                Pawn pawn = board.board[coordinates[0]][coordinates[1]];
-                for (int i = 0; i < inDangerFields.size(); i++) {
-                    if (inDangerFields.get(i)[0] == coordinates[0] && inDangerFields.get(i)[1] == coordinates[1]) {
-                        ArrayList<int[]> possibleMoves = possibleMoves(coordinates, board);
-                        displayPossibleMoves(possibleMoves);
-                        int[] getCoordinates = getCoordinates(possibleMoves);
-                        pawn.setX(getCoordinates[0]);
-                        pawn.setY(getCoordinates[1]);
-                        board.board[coordinates[0]][coordinates[1]] = board.board[getCoordinates[0]][getCoordinates[1]];
-                        board.board[getCoordinates[0]][getCoordinates[1]] = pawn;
-                        board.board[getCoordinates[2]][getCoordinates[3]].setColor(0);
-                        board.board[getCoordinates[2]][getCoordinates[3]].setActive(false);
-                        if (checkForBattle(board, switchPlayer).size() != 0) {
-                            movementPhase(board);
-                        }
-                        isValid = true;
-                    }
-                }
-            }
+            movementHit(board, inDangerFields);
         } else {
-            int[] coordinates = playersMove(board, switchPlayer);
-            ArrayList<int[]> possibleMoves = possibleMoves(coordinates, board);
-            displayPossibleMoves(possibleMoves);
-            x = coordinates[0];
-            y = coordinates[1];
-            Pawn pawn = board.board[x][y];
-            int[] getCoordinates = getCoordinates(possibleMoves);
-            pawn.setX(getCoordinates[0]);
-            pawn.setY(getCoordinates[1]);
-            board.board[x][y] = board.board[getCoordinates[0]][getCoordinates[1]];
-            board.board[getCoordinates[0]][getCoordinates[1]] = pawn;
+            makeMove(board);
         }
 
     }
+
+    private void makeMove(Board board) {
+        int x,y;
+        int[] coordinates = playersMove(board, switchPlayer);
+        ArrayList<int[]> possibleMoves = possibleMoves(coordinates, board);
+        displayPossibleMoves(possibleMoves);
+        x = coordinates[0];
+        y = coordinates[1];
+        Pawn pawn = board.board[x][y];
+        int[] getCoordinates = getCoordinates(possibleMoves);
+        pawn.setX(getCoordinates[0]);
+        pawn.setY(getCoordinates[1]);
+        board.board[x][y] = board.board[getCoordinates[0]][getCoordinates[1]];
+        board.board[getCoordinates[0]][getCoordinates[1]] = pawn;
+    }
+
+    private void movementHit(Board board, ArrayList<int[]> inDangerFields) {
+        System.out.println("You must move with these Fields first: ");
+        for (int i = 0; i < inDangerFields.size(); i++) {
+            convertCoordinates(inDangerFields.get(i));
+        }
+        boolean isValid = false;
+        while (!isValid) {
+            int[] coordinates = playersMove(board, switchPlayer);
+            Pawn pawn = board.board[coordinates[0]][coordinates[1]];
+            for (int i = 0; i < inDangerFields.size(); i++) {
+                if (inDangerFields.get(i)[0] == coordinates[0] && inDangerFields.get(i)[1] == coordinates[1]) {
+                    ArrayList<int[]> possibleMoves = possibleMoves(coordinates, board);
+                    displayPossibleMoves(possibleMoves);
+                    int[] getCoordinates = getCoordinates(possibleMoves);
+                    pawn.setX(getCoordinates[0]);
+                    pawn.setY(getCoordinates[1]);
+                    board.board[coordinates[0]][coordinates[1]] = board.board[getCoordinates[0]][getCoordinates[1]];
+                    board.board[getCoordinates[0]][getCoordinates[1]] = pawn;
+                    board.board[getCoordinates[2]][getCoordinates[3]].setColor(0);
+                    board.board[getCoordinates[2]][getCoordinates[3]].setActive(false);
+                    if (checkForBattle(board, switchPlayer).size() != 0) {
+                        movementPhase(board);
+                    }
+                    isValid = true;
+                }
+            }
+        }
+    }
+
     public boolean hasWon(Board board){
         for(int i=0; i<board.board.length; i++){
             for(int j=0; j<board.board.length; j++){
