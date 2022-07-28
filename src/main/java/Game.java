@@ -8,9 +8,9 @@ public class Game {
         board.printBoard();
         while(true) {
             System.out.println("Player " + movement.getSwitchPlayer());
+            movement.switchPlayerFunc();
             movement.movementPhase(board);
             board.printBoard();
-            movement.switchPlayerFunc();
         }
     }
 

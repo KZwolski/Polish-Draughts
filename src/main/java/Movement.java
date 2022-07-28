@@ -248,9 +248,10 @@ public class Movement {
                         board.board[coordinates[0]][coordinates[1]] = board.board[getCoordinates[0]][getCoordinates[1]];
                         board.board[getCoordinates[0]][getCoordinates[1]] = pawn;
                         board.board[getCoordinates[2]][getCoordinates[3]].setColor(0);
-//                        if (checkForBattle(board, switchPlayer).size() != 0) {
-//                            movementPhase(board);
-//                        }
+                        board.board[getCoordinates[2]][getCoordinates[3]].setActive(false);
+                        if (checkForBattle(board, switchPlayer).size() != 0) {
+                            movementPhase(board);
+                        }
                         isValid = true;
                     }
                 }
