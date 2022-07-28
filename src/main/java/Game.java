@@ -9,8 +9,6 @@ public class Game {
             board.printBoard();
             movement.movementPhase(board, 2);
             board.printBoard();
-            int[] test = movement.checkForBattle(board, 2);
-            System.out.println(test[0] + " " + test[1]);
 
         }
     }

@@ -106,8 +106,10 @@ public class Movement {
 
 
     public void displayPossibleMoves(ArrayList<int[]> moves) {
+        System.out.println("Possible moves for chosen Pawn: ");
         for (int i = 0; i < moves.size(); i++) {
             if (moves.get(i) != null) {
+                System.out.print(i+1 + ".");
                 convertCoordinates(moves.get(i));
             }
         }
@@ -121,7 +123,7 @@ public class Movement {
     }
 
     public int[] getCoordinates(ArrayList<int[]> moves) {
-        System.out.println("Wybierz ruch: ");
+        System.out.println("Choose one of the above numbers: ");
         Scanner scanner = new Scanner(System.in);
         int chooseMove = scanner.nextInt();
         if (moves.size() == 1) {
@@ -137,52 +139,82 @@ public class Movement {
         return null;
     }
 
+    public int[] putRowAndColumnIntoTable(int row, int column) {
+        int[] coordinates = new int[2];
+        coordinates[0] = row;
+        coordinates[1] = column;
+        return coordinates;
+    }
+
+    public int getOppositeColor(int player) {
+        int color;
+        switch (player) {
+            case 1:
+                color = 2;
+                break;
+            case 2:
+                color = 1;
+
+                break;
+            default:
+                color = 0;
+                break;
+
+        }
+        return color;
+    }
+
+
+    public ArrayList<int[]> checkForBattle(Board board, int player) {
+        ArrayList<int[]> validMoves = new ArrayList<>();
+        int oppositeColor = getOppositeColor(player);
+        for (int i = 0; i < board.board.length - 1; i++) {
+            for (int j = 0; j < board.board.length - 1; j++) {
+                if (board.board[i][j].getColor() == player) {
+                    if ((isFieldOnBoard(i + 1, j + 1, board) && board.board[i + 1][j + 1].getColor() == oppositeColor) ||
+                            (isFieldOnBoard(i - 1, j - 1, board) && board.board[i - 1][j - 1].getColor() == oppositeColor) ||
+                            (isFieldOnBoard(i - 1, j + 1, board) && board.board[i - 1][j + 1].getColor() == oppositeColor) ||
+                            (isFieldOnBoard(i + 1, j - 1, board) && board.board[i + 1][j - 1].getColor() == oppositeColor)) {
+
+                        validMoves.add(putRowAndColumnIntoTable(i, j));
+                    }
+
+                }
+
+            }
+        }
+        return validMoves;
+    }
+
     public void movementPhase(Board board, int player) {
-        int [] coordinates = playersMove(board, player);
+        ArrayList<int[]> inDangerFields = checkForBattle(board,player);
+        int x,y;
+        if(inDangerFields.size() != 0){
+            System.out.println("You must move with these Fields first: ");
+            for(int i=0; i<inDangerFields.size(); i++){
+                convertCoordinates(inDangerFields.get(i));
+            }
+            boolean isValid = false;
+            while(!isValid){
+                int[] coordinates = playersMove(board, player);
+                for(int i=0; i<inDangerFields.size(); i++){
+                    if(inDangerFields.get(i)[0] == coordinates[0] && inDangerFields.get(i)[1] == coordinates[1]){
+                         isValid=true;
+                    }
+                }
+            }
+        }else{
+        int[] coordinates = playersMove(board, player);
         ArrayList<int[]> possibleMoves = possibleMoves(coordinates, board);
         displayPossibleMoves(possibleMoves);
-        int x = coordinates[0];
-        int y = coordinates[1];
+         x = coordinates[0];
+         y = coordinates[1];
         Pawn pawn = board.board[x][y];
         int[] getCoordinates = getCoordinates(possibleMoves);
-
         pawn.setX(getCoordinates[0]);
         pawn.setY(getCoordinates[1]);
         board.board[x][y] = board.board[getCoordinates[0]][getCoordinates[1]];
-        board.board[getCoordinates[0]][getCoordinates[1]] = pawn;
+        board.board[getCoordinates[0]][getCoordinates[1]] = pawn;}
 
-    }
-
-    public int[] checkForBattle(Board board, int player){
-        int[] cords = new int[2];
-        for (int i = 0; i < board.board.length; i++) {
-            for (int j = 0; j < board.board.length; j++) {
-                if (board.board[i][j].getColor() == player){
-                if (isFieldOnBoard(i+1, j + 1, board) && board.board[i+1][j+1].getColor() != player
-                        && board.board[i+1][j+1].getColor() != 0){
-                    cords[0] = i;
-                    cords[1] = j;
-                    return cords;
-                } else if (isFieldOnBoard(i-1, j - 1, board) && board.board[i-1][j-1].getColor() != player
-                        && board.board[i+1][j+1].getColor() != 0){
-                    cords[0] = i;
-                    cords[1] = j;
-                    return cords;
-                } else if (isFieldOnBoard(i-1, j + 1, board) && board.board[i-1][j+1].getColor() != player
-                        && board.board[i+1][j+1].getColor() != 0){
-                    cords[0] = i;
-                    cords[1] = j;
-                    return cords;
-                } else if (isFieldOnBoard(i + 1, j - 1, board) && board.board[i+1][j-1].getColor() != player
-                        && board.board[i+1][j+1].getColor() != 0) {
-                    cords[0] = i;
-                    cords[1] = j;
-                    return cords;
-                }
-                }
-
-            }
-            }
-        return null;
     }
 }
