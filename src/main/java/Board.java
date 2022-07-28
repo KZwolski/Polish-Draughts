@@ -1,7 +1,3 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class Board {
     private int whiteSquare = 4;
     private int blackSquare = 8;
@@ -9,6 +5,31 @@ public class Board {
 
     public Board(int size) {
         board = new Pawn[size][size];
+        initEmptyBoard(size);
+        initPawns(0, 4, size, 1);
+        initPawns(size - 4, size, size, 2);
+
+    }
+
+    private void initPawns(int b, int x, int size, int color) {
+        for (int i = b; i < x; i++) {
+            for (int j = 0; j < size; j++) {
+                if (i % 2 == 0) {
+                    if (j % 2 != 0) {
+                        Pawn pawn = new Pawn(color, i, j, false, true, board[i][j].getSquareColor());
+                        board[i][j] = pawn;
+                    }
+                } else {
+                    if (j % 2 == 0) {
+                        Pawn pawn = new Pawn(color, i, j, false, true, board[i][j].getSquareColor());
+                        board[i][j] = pawn;
+                    }
+                }
+            }
+        }
+    }
+
+    private void initEmptyBoard(int size) {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 if (i % 2 == 0) {
@@ -26,40 +47,6 @@ public class Board {
                 }
             }
         }
-
-
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < size; j++) {
-                if (i % 2 == 0) {
-                    if (j % 2 != 0) {
-                        Pawn pawn = new Pawn(1, i, j, false, true, board[i][j].getSquareColor());
-                        board[i][j] = pawn;
-                    }
-                } else {
-                    if (j % 2 == 0) {
-                        Pawn pawn = new Pawn(1, i, j, false, true, board[i][j].getSquareColor());
-                        board[i][j] = pawn;
-                    }
-                }
-            }
-        }
-        for (int i = size - 4; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                if (i % 2 == 0) {
-                    if (j % 2 != 0) {
-                        Pawn pawn = new Pawn(2, i, j, false, true, board[i][j].getSquareColor());
-                        board[i][j] = pawn;
-
-                    }
-                } else {
-                    if (j % 2 == 0) {
-                        Pawn pawn = new Pawn(2, i, j, false, true, board[i][j].getSquareColor());
-                        board[i][j] = pawn;
-                    }
-                }
-            }
-        }
-
     }
 
     public void printBoard() {
