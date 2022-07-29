@@ -74,17 +74,11 @@ public class Board {
         }
         System.out.print("   ");
         for (int i = 1; i <= board.length; i++) {
-            System.out.print(" " + (char) (64 + i)+ " ");
+            System.out.print(" " + (char) (64 + i) + " ");
         }
         System.out.println();
 
     }
-
-    public int[][] fillBoard(int size) {
-        int[][] pawns = new int[size][size];
-        return pawns;
-    }
-
 
 
 }

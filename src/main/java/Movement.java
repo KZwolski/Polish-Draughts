@@ -275,6 +275,7 @@ public class Movement {
                     movePawn(board, x, y, pawn, getCoordinates);
                     removePawn(board, getCoordinates);
                     if (checkForBattle(board, switchPlayer).size() != 0) {
+                        board.printBoard();
                         movementPhase(board);
                     }
                     isValid = true;
